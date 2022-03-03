@@ -15,7 +15,7 @@ Investigation of Genetic Variants and Causal Biomarkers Associated Brain Aging
 </div>
 
 The model takes 3D structural MRI of brain and predicts age of the individual. The mean absolute error (MAE) of our model was
-2.64 years.
+2.64 years. We calculated 'delta age' by subtracting individuals' true age from the predicted age
 
 ### Saliency Map derived by Integrated Gradients
 <div>
@@ -36,7 +36,7 @@ Integrated Gradients showed that the prediction model highlighted the fornix and
           <img width = "350" height = "350" src = "https://github.com/Flumenlucidum/Brain-Aging/blob/main/images/delta_0227.jpeg">
 </div>
 
-The associated genetic variants had links to carcinogenesis, immune response, and neuron survival.
+The genetic variants associated with delta age had links to carcinogenesis, immune response, and neuron survival.
 In addition, the volume of the fornix and thalamus also had similar associated genetic variants. Delta age and the volume of the two regions had high genetic correlation in LD Score regression.
 
 ### Causal Biomarkers 
