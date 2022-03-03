@@ -36,3 +36,4 @@ Integrated Gradients showed that the prediction model highlighted the fornix and
           <img width = "350" height = "350" src = "https://github.com/Flumenlucidum/Brain-Aging/blob/main/images/delta_0227.jpeg">
 </div>
 
+The associated genetic variants had links to carcinogenesis, immune response, and neuron survival.
