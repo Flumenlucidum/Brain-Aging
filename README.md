@@ -11,7 +11,7 @@ Investigation of Genetic Variants and Causal Biomarkers Associated Brain Aging
 ### 3D Convlutional Neural Network Model for Age Prediction 
 <div>
           <p align="left">
-          <img width = "600" height = "350" src = "https://github.com/Flumenlucidum/Brain-Aging/blob/main/images/3dcnn.jpg">
+          <img width = "600" height = "350" src = "https://github.com/Flumenlucidum/Brain-Aging/blob/main/images/3dcnn.png">
 </div>
 
 The model takes 3D structural MRI of brain and predicts age of the individual. The mean absolute error (MAE) of our model was
@@ -33,6 +33,6 @@ Integrated Gradients showed that the prediction model highlighted the fornix and
 </div>
 <div>
           <p align="left">
-          <img width = "350" height = "350" src = "https://github.com/Flumenlucidum/Brain-Aging/blob/main/images/delta_0227.jpg">
+          <img width = "350" height = "350" src = "https://github.com/Flumenlucidum/Brain-Aging/blob/main/images/delta_0227.jpeg">
 </div>
 
