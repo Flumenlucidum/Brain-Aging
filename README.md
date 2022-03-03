@@ -1,4 +1,4 @@
-# Brain-Aging
+# Brain Aging
 Investigation of Genetic Variants and Causal Biomarkers Associated Brain Aging
 
 
@@ -11,7 +11,7 @@ Investigation of Genetic Variants and Causal Biomarkers Associated Brain Aging
 ### 3D Convlutional Neural Network Model for Age Prediction 
 <div>
           <p align="left">
-          <img width = "600" height = "350" src = "https://github.com/Flumenlucidum/Brain-Aging/blob/main/images/3dcnn.png">
+          <img width = "600" height = "350" src = "https://github.com/Flumenlucidum/Brain-Aging/blob/main/images/3dcnn.jpg">
 </div>
 
 The model takes 3D structural MRI of brain and predicts age of the individual. The mean absolute error (MAE) of our model was
