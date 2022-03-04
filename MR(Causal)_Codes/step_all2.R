@@ -1,11 +1,13 @@
+#Import libraries
 library(MendelianRandomization)
 library(nlmr)
-#Get the pvalue less than 5e-8 and make the list of them 
 library(data.table)
 library(dplyr)
 library(seqminer)
 library(RCIT)
-MR_res_table=fread('../MR_result_final.csv')
+
+#Get the pvalue less than 5e-8 and make the list of them 
+MR_res_table=fread('../MR_result_final.csv') #A table to write results on 
 MR_res_table<-as.data.frame(MR_res_table)
 
 for(var in 250:nrow(MR_res_table)){
@@ -28,7 +30,7 @@ for(var in 250:nrow(MR_res_table)){
 		a<-fread('cont.gz')
 		a<-as.data.frame(a)
 		if('beta_EUR' %in% colnames(a)){
-			a<-a[,c('chr','pos','ref','alt','af_EUR','beta_EUR','se_EUR','pval_EUR')]
+			a<-a[,c('chr','pos','ref','alt','af_EUR','beta_EUR','se_EUR','pval_EUR')] #Estimates from the European ancestry
 			a<-a[complete.cases(a),]
 			a<-a[which(a$pval_EUR<5e-8),]
 			a<-a[which(a$chr!='X'),]
@@ -49,16 +51,16 @@ for(var in 250:nrow(MR_res_table)){
 			fin2<-fin[complete.cases(fin),]
 			write.table(fin2$V2,file='markers_list.txt',row.names=F,quote=F,col.names=F)
 
-			system('./step2.sh',wait=T)
+			system('./step2.sh',wait=T)  ##Make plink files with only the significant markers with regard to the exposure
 			Sys.sleep(40)
-			system('./step3.sh',wait=T)
+			system('./step3.sh',wait=T)  #LD pruning
 			Sys.sleep(40)
-			system('./step4.sh',wait=T)
+			system('./step4.sh',wait=T)  #LD pruning
 			Sys.sleep(40)
-			system('./step5.sh',wait=T)
+			system('./step5.sh',wait=T)  #Extract only the 34,129 individuals with MRI
 			Sys.sleep(40)
-			system('Rscript step6.R',wait=T)
-			system('Rscript step7.R',wait=T)
+			system('Rscript step6.R',wait=T)  #Merge files from different chromosomes
+			system('Rscript step7.R',wait=T)  #Remove markers that directly affect the outcome (delta age)
 			
 			final=fread('final_markers_list.txt')
 			final<-final[which(final$AF_Allele2>=0.01 & final$af_EUR>=0.01),]
@@ -105,7 +107,7 @@ for(var in 250:nrow(MR_res_table)){
 			print(cor_XZ$estimate>0)
 
 			if(cor_XZ$p.value<0.05 & cor_XZ$estimate>0){
-				d1=RCIT(nlmr$Z,nlmr$Y,nlmr$X)
+				d1=RCIT(nlmr$Z,nlmr$Y,nlmr$X)  #Repeat RCIT three times
 				d2=RCIT(nlmr$Z,nlmr$Y,nlmr$X)
 				d3=RCIT(nlmr$Z,nlmr$Y,nlmr$X)
 
