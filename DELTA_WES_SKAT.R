@@ -1,22 +1,26 @@
+#Import Libraries
 library(SKAT)
 library(data.table)
+
 SetID<-fread('./ukb_whole_chr1.SetID',head=F)
 gene_list<-unique(SetID$V1)
 n=length(gene_list)%/%100
 rem=length(gene_list)%%100
+
 File.Bed<-'./ukb_whole_wes_chr1.bed'
 File.Bim<-'./ukb_whole_wes_chr1.bim'
 File.Fam<-'./ukb_whole_wes_chr1.fam'
 File.Cov<-'./ukb_whole_wes.cov'
 FAM_Cov<-Read_Plink_FAM_Cov(File.Fam,File.Cov,Is.binary = F)
-#Object file for Null model
 
+#Object file for Null model
 obj<-SKAT_Null_Model(Phenotype~COVAR1+COVAR2+COVAR3+COVAR4+COVAR5+COVAR6+COVAR7+COVAR8+COVAR9+COVAR10+COVAR11+COVAR12+cv1+cv2+cv3+cv4, data=FAM_Cov, out_type = 'C')
 
 # If the phenotype is binary one, out_type='D'
 #When there is no covariate file, use FAM<-Read_Plink_FAM(File.Fam,Is.binary = F) 
 #and object obj<-SKAT_Null_Model(y~1, out_type = 'C')
 
+#Load 100 genes at a time to prevent problems with the memory
 for(i in 1:n){
 
 	SetID_part<-SetID[which(SetID$V1 %in% gene_list[(100*(i-1)+1):(100*i)]),]
