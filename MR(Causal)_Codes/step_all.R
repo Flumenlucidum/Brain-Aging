@@ -1,10 +1,12 @@
+#Import libraries
 library(MendelianRandomization)
 library(nlmr)
-#Get the pvalue less than 5e-8 and make the list of them 
 library(data.table)
 library(dplyr)
 library(seqminer)
-MR_res_table=fread('../MR_results_table.csv')
+
+#Get the pvalue less than 5e-8 and make the list of them 
+MR_res_table=fread('../MR_results_table.csv') #A table to write results on
 MR_res_table<-as.data.frame(MR_res_table)
 
 for(var in 303:nrow(MR_res_table)){
@@ -21,9 +23,9 @@ system(paste0('wget https://pan-ukb-us-east-1.s3.amazonaws.com/sumstats_flat_fil
 	a<-fread('cont.gz')
 	a<-as.data.frame(a)
 	if('beta_EUR' %in% colnames(a)){
-	a<-a[,c('chr','pos','ref','alt','af_EUR','beta_EUR','se_EUR','pval_EUR')]
+	a<-a[,c('chr','pos','ref','alt','af_EUR','beta_EUR','se_EUR','pval_EUR')] #Estimates from the European ancestry
 	a<-a[complete.cases(a),]
-	a<-a[which(a$pval_EUR<5e-8),]
+	a<-a[which(a$pval_EUR<5e-8),]   #Significant markers with P<5e-8
 	a<-a[which(a$chr!='X'),]
 
 	a$chr<-as.numeric(a$chr)
@@ -42,23 +44,25 @@ system(paste0('wget https://pan-ukb-us-east-1.s3.amazonaws.com/sumstats_flat_fil
 	fin2<-fin[complete.cases(fin),]
 	write.table(fin2$V2,file='markers_list.txt',row.names=F,quote=F,col.names=F)
 
-	system('./step2.sh',wait=T)
+	system('./step2.sh',wait=T)  #Make plink files with only the significant markers with regard to the exposure
 	Sys.sleep(40)
-	system('./step3.sh',wait=T)
+	system('./step3.sh',wait=T)  #LD pruning
 	Sys.sleep(40)
-	system('./step4.sh',wait=T)
+	system('./step4.sh',wait=T)  #LD pruning
 	Sys.sleep(40)
-	system('./step5.sh',wait=T)
+	system('./step5.sh',wait=T)  #Extract only the 34,129 individuals with MRI
 	Sys.sleep(40)
-	system('Rscript step6.R',wait=T)
-	system('Rscript step7.R',wait=T)
+	system('Rscript step6.R',wait=T) #Merge files from different chromosomes
+	system('Rscript step7.R',wait=T) #Remove markers that directly affect the outcome (delta age)
 	
 	final=fread('final_markers_list.txt')
+		
+	#Filter out rare variants for stable estimation of causal estimates
 	final<-final[which(final$AF_Allele2>=0.01 & final$af_EUR>=0.01),]
 	code=as.numeric(MR_res_table$code[var])
 	if(dim(final)[1]>=2){
-	#Linear MR
 	
+	#Linear MR
 	obj<-mr_input(bx=final$beta_EUR,bxse=final$se_EUR, by=final$BETA,byse=final$SE)
 	all=mr_allmethods(obj)
 	print('Linear')
@@ -94,7 +98,7 @@ system(paste0('wget https://pan-ukb-us-east-1.s3.amazonaws.com/sumstats_flat_fil
 	print(mod$p_tests<0.05)
 	print(mod$p_heterogeneity<0.05)
 	
-	print('fracpoly')
+	print('fracpoly')  
 	if(min(nlmr$X)>1){
 	mod2=fracpoly_mr(y=nlmr$Y,x=nlmr$X,g=nlmr$Z)
 	}else{
