@@ -1,6 +1,8 @@
 # Brain Aging
-Investigation of Genetic Variants and Causal Biomarkers Associated Brain Aging
 
+Investigation of Genetic Variants and Causal Biomarkers Associated with Brain Aging
+Jangho Kim, Junhyeong Lee, Seunggeun Lee
+medRxiv 2022.03.04.22271813; doi: https://doi.org/10.1101/2022.03.04.22271813
 
 ### Overview of the Analysis
 <div>
